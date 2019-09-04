@@ -10,6 +10,7 @@ import favoriteUI from './views/favorites';
 import elements from './config/ui';
 import { formateDateFromString } from './helpers/date';
 
+
 const {
   form,
   countryOrigin,
@@ -17,7 +18,9 @@ const {
   startDate, endDate,
   cityOrigin,
   cityDestination,
-  ticketsContainer
+  ticketsContainer,
+  // btnDeleteFavorite,
+  favorites
 } = elements;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -43,6 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
       onAddToFavorites(id);
     }
   });
+
+  favorites.addEventListener('click', e => {
+    if (e.target.classList.contains('delete-favorites-btn')) {
+      const id = e.target.closest('[data-id]').dataset.id;
+      onDeleteFavorite(id);
+    }
+  });
+
 
   // Handlers
   async function initApp() {
@@ -72,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(locationsStore.lastSearch.length === 0) {
       UIkit.notification('There are no any tickets for selected direction');
     }
+
     ticketsUI.renderTickets(locationsStore.lastSearch);
 
   }
@@ -80,5 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const ticket = locationsStore.getTicketById(id);
     favoritesStore.addNewFavorite(ticket);
     favoriteUI.renderFavorites(favoritesStore.favorites);
+    UIkit.notification('Ticket succesfully added to favotites');
+  }
+
+  function onDeleteFavorite(id) {
+    favoritesStore.deleteFavorite(id);
+    favoriteUI.renderFavorites(favoritesStore.favorites);
+    UIkit.notification('Ticket succesfully deleted from favotites');
   }
 })
