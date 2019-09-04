@@ -1,5 +1,6 @@
 import "./style.css";
 import './plugins';
+import UIkit from 'uikit';
 import locationsStore from "./store/locations.store";
 import favoritesStore from './store/favorites.store';
 import airlinesStore from './store/airlines.store';
@@ -47,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
   async function initApp() {
     await locationsStore.init();
     await airlinesStore.init();
-
     formUi.renderCountries(locationsStore.countries);
   };
 
@@ -68,7 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
       depart_date,
       return_date,
     });
-
+    
+    if(locationsStore.lastSearch.length === 0) {
+      UIkit.notification('There are no any tickets for selected direction');
+    }
     ticketsUI.renderTickets(locationsStore.lastSearch);
 
   }

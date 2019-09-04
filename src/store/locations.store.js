@@ -29,6 +29,8 @@ class LocationsStore {
   async fetchTickets(params) {
     const response = await this.api.prices(params);
     this._lastSearch = this.updateData(response.data);
+    console.log(response.data);
+    console.log(this._lastSearch);
  }
 
   updateData(data) {

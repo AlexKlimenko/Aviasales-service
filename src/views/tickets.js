@@ -10,6 +10,9 @@ class TicketsUI {
 
   renderTickets(tickets) {
     this.container.innerHTML = '';
+
+    
+
     let fragment = "";
     tickets.forEach(ticket => {
       const template = TicketsUI.ticketTemplate(ticket);
@@ -28,11 +31,11 @@ class TicketsUI {
 
     return `
     <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
-      <img src="http://pics.avs.io/200/200/${ticket.airline}.png" alt="альтернативный текст">
-      <span>${airlineName}</span>
+      <img src="http://pics.avs.io/200/200/${ticket.airline}.png" width="100" height="100" alt="альтернативный текст">
+      <li>Airline: ${airlineName}</li>
       <p>Flight number: ${ticket.flight_number}. Price: ${ticket.price}$. Transfers: ${transfers}</p>
-      <p>Departure: ${depart_date}, ${cityOrigin} (${ticket.origin})</p>
-      <p>Arrival: ${cityDestination} (${ticket.destination})</p>
+      <li>Departure: ${depart_date}, ${cityOrigin} (${ticket.origin})</li>
+      <li>Arrival: ${cityDestination} (${ticket.destination})</li>
       <button class="uk-button uk-button-default add-favorites" data-id="${ticket.id}">Add to favorites</button>
     </div>
     `;
