@@ -9,7 +9,9 @@ class FavoritesStore {
 
   addNewFavorite(item) {
     this._favorites[item.id] = item;
-    console.log(this._favorites);
+  }
+  deleteFavorite(id) {
+    delete this._favorites[id];
   }
 }
 

@@ -1,5 +1,6 @@
 import "./style.css";
 import './plugins';
+import UIkit from 'uikit';
 import locationsStore from "./store/locations.store";
 import favoritesStore from './store/favorites.store';
 import airlinesStore from './store/airlines.store';
@@ -9,6 +10,7 @@ import favoriteUI from './views/favorites';
 import elements from './config/ui';
 import { formateDateFromString } from './helpers/date';
 
+
 const {
   form,
   countryOrigin,
@@ -16,7 +18,9 @@ const {
   startDate, endDate,
   cityOrigin,
   cityDestination,
-  ticketsContainer
+  ticketsContainer,
+  // btnDeleteFavorite,
+  favorites
 } = elements;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -43,11 +47,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  favorites.addEventListener('click', e => {
+    if (e.target.classList.contains('delete-favorites-btn')) {
+      const id = e.target.closest('[data-id]').dataset.id;
+      onDeleteFavorite(id);
+    }
+  });
+
+
   // Handlers
   async function initApp() {
     await locationsStore.init();
     await airlinesStore.init();
-
     formUi.renderCountries(locationsStore.countries);
   };
 
@@ -68,6 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
       depart_date,
       return_date,
     });
+    
+    if(locationsStore.lastSearch.length === 0) {
+      UIkit.notification('There are no any tickets for selected direction');
+    }
 
     ticketsUI.renderTickets(locationsStore.lastSearch);
 
@@ -77,5 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const ticket = locationsStore.getTicketById(id);
     favoritesStore.addNewFavorite(ticket);
     favoriteUI.renderFavorites(favoritesStore.favorites);
+    UIkit.notification('Ticket succesfully added to favotites');
+  }
+
+  function onDeleteFavorite(id) {
+    favoritesStore.deleteFavorite(id);
+    favoriteUI.renderFavorites(favoritesStore.favorites);
+    UIkit.notification('Ticket succesfully deleted from favotites');
   }
 })

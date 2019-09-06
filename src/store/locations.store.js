@@ -1,5 +1,6 @@
 import aviaSalesService from "../services/aviasales.services";
 import { genereteId } from '../helpers/uuid';
+import { formateDateFromString } from '../helpers/date';
 
 class LocationsStore {
   constructor(api, genereteId) {
@@ -34,6 +35,9 @@ class LocationsStore {
   updateData(data) {
     return Object.entries(data).reduce((acc, [, value]) => {
       value.id = this.genereteId();
+      value.cityOrigin = this.getCityByCityCode(value.origin);
+      value.cityDestination = this.getCityByCityCode(value.destination);
+      value.depart_date = formateDateFromString(value.departure_at,  'MM.dd.yyyy hh:mm');
       acc[value.id] = value;
       return acc;
     }, {});
